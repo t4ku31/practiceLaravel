@@ -1,0 +1,31 @@
+services:
+  app:
+    build:
+      context: ./docker/app
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+
+  web:
+    image: nginx:1.29.0-alpine # 公式イメージを指定
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src/public:/var/www/html/public:ro
+      - ./docker/web/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0 # 公式イメージを指定
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: laravel_db
+
+volumes:
+  db-data:
