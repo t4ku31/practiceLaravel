@@ -17,7 +17,7 @@ Route::resource('/users', UserController::class);
 Route::get('/user/register',function(){
     return view('user.register');
 });
-
+Route::view('dashboard','dashboard')->middleware('auth');
 
 Route::resource('/tasks', TaskController::class)->middleware('auth');
 

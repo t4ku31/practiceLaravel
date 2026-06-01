@@ -14,11 +14,11 @@ use App\Http\Requests\StoreUserRequest;
 class UserController extends Controller
 
 {
-    //コンストラクタインジェクション
-    public function __construct( protected UserRepository $users)
-    {
+    // //コンストラクタインジェクション
+    // public function __construct( protected UserRepository $users)
+    // {
 
-    }
+    // }
 
     /**
      * Display a listing of the resource.
@@ -50,18 +50,21 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $validatedData = $request->validated();
-        $hashedPassword = Hash::make($validatedData->password);
-        
+        $hashedPassword = Hash::make($validatedData['password']);
+
         $user = new User();
-        $user->name = $validatedData->name;
-        $user->email = $validatedData->email;
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
         $user->password = $hashedPassword;
 
         $isSuccess = $user->save();
        
         if($isSuccess){
             Auth::login($user);
+            return redirect('/dashboard');
         }
+
+        return redirect()->back()->withInput();
     }
 
     /**
@@ -69,8 +72,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        
+        return view('user.profile', [
+            'userName' => $user->name,
+            'userEmail' => $user->email,
+        ]);
     }
+    
 
     /**
      * Update the specified resource in storage.
