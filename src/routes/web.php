@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\resources\UserController;
+use App\Http\Controllers\AuthController;
 //　↓方法cで使います。
 // use Illuminate\Support\Facades\View; 
 
@@ -12,11 +12,17 @@ Route::get('/', function () {
 });
 // userリソースに対するルーティングを自動生成
 Route::resource('/users', UserController::class);
-// user
+
+
+Route::prefix('authentication')->name('authentication')->group(function () {
+    Route::post('/userRegister', [AuthController::class, 'userRegister']);
+    Route::post('/userLogin', [AuthController::class, 'userLogin']);
+});
 
 Route::get('/user/register',function(){
     return view('user.register');
 });
+
 Route::view('dashboard','dashboard')->middleware('auth');
 
 Route::resource('/tasks', TaskController::class)->middleware('auth');
