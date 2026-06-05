@@ -13,14 +13,18 @@ Route::get('/', function () {
 // userリソースに対するルーティングを自動生成
 Route::resource('/users', UserController::class);
 
-
+// 認証関連のルーティングをグループ化
 Route::prefix('authentication')->name('authentication')->group(function () {
-    Route::post('/userRegister', [AuthController::class, 'userRegister']);
-    Route::post('/userLogin', [AuthController::class, 'userLogin']);
+    Route::post('/userRegister', [AuthController::class, 'userRegister'])->name('.userRegister');
+    Route::post('/userLogin', [AuthController::class, 'userLogin'])->name('.userLogin');
+    Route::post('/userLogout', [AuthController::class, 'userLogout'])->name('.userLogout')->middleware('auth');
 });
 
 Route::get('/user/register',function(){
     return view('user.register');
+});
+Route::get('/user/login',function(){
+    return view('user.login');
 });
 
 Route::view('dashboard','dashboard')->middleware('auth');

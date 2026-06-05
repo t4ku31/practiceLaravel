@@ -1,4 +1,4 @@
-c<?php
+<?php
 
 namespace App\View\Composers;
 

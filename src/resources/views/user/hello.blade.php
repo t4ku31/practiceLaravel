@@ -11,5 +11,10 @@
         <li>メール: {{ $email }}</li>
         <li>パスワード: {{ $password }}</li>
     </ul>
+
+    <form>
+    @csrf
+    <button type="submit" formaction="{{ route('authentication.userLogout') }}">ログアウト</button>
+</form>
 </body>
 </html>
