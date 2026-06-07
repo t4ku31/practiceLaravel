@@ -15,11 +15,10 @@ return new class extends Migration
 
             $table->id();
             $table->timestamps();
-            $table->String('title',20);
+            $table->String('title', 20);
             $table->boolean('is_completed')->default(false);
         });
 
-        
     }
 
     /**

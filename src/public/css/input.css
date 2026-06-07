@@ -1,0 +1,7 @@
+.input-base {
+    border: 2px solid gray;
+}
+
+.input-error {
+    border: 2px solid red;
+}

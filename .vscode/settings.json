@@ -1,0 +1,9 @@
+{
+  "[php]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "DEVSENSE.phptools-vscode"
+  },
+  "phptools.format.rules": {
+    "format.pint": true
+  }
+}

@@ -1,11 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\resources\UserController;
 use App\Http\Controllers\AuthController;
-//　↓方法cで使います。
-// use Illuminate\Support\Facades\View; 
+use App\Http\Controllers\resources\TaskController;
+use App\Http\Controllers\resources\UserController;
+use Illuminate\Support\Facades\Route;
 
+//　↓方法cで使います。
+// use Illuminate\Support\Facades\View;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,22 +21,21 @@ Route::prefix('authentication')->name('authentication')->group(function () {
     Route::post('/userLogout', [AuthController::class, 'userLogout'])->name('.userLogout')->middleware('auth');
 });
 
-Route::get('/user/register',function(){
+Route::get('/user/register', function () {
     return view('user.register');
 });
-Route::get('/user/login',function(){
+Route::get('/user/login', function () {
     return view('user.login');
-});
+})->name('user.login');
 
-Route::view('dashboard','dashboard')->middleware('auth');
+Route::get('/dashboard', [TaskController::class, 'index'])->name('dashboard');
 
 Route::resource('/tasks', TaskController::class)->middleware('auth');
 
-//方法A
+// 方法A
 // Route::get('/',function(){
 //     return view('greeting.blade.php', ['name' => 'Takumi']);
 // });
-
 
 // 方法B
 Route::view('/hello', 'greeting.blade.hello', ['nameWithHtml' => '<h1>Hello!,Takumi with html</h1>']);

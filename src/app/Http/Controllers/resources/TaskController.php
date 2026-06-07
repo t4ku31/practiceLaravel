@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\resources;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -13,7 +15,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $tasks = Task::where('user_id', Auth::id())->get();
+        return view('dashboard', compact('tasks'));
     }
 
     /**
@@ -21,7 +24,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        return view('tasks.create');
     }
 
     /**
@@ -29,7 +32,12 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        //
+        Task::create([
+            'title' => $request->title,
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -53,7 +61,9 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+        $validatedData = $request->validated();
+        $task->update($validatedData);
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -61,6 +71,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+        return redirect()->route('dashboard');
     }
 }
